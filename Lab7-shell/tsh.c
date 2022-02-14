@@ -390,10 +390,9 @@ void sigchld_handler(int sig)
     }
 
     while((pid = waitpid(-1, &status, WUNTRACED | WNOHANG)) > 0){
-        job = getjobpid(jobs, pid);
-        if(!job){
+        if((job = getjobpid(jobs, pid)) == NULL)
             app_error("getjobpid error");
-        }
+
         jid = job->jid;
 
         if(WIFEXITED(status)){
